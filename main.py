@@ -3,7 +3,9 @@ import discord
 import pandas as pd
 from dotenv import load_dotenv, dotenv_values
 import os
+import asyncio
 import src.handlers.event_handler as event_handle
+import src.utils.extracted_messages_filewriter as emf
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -38,14 +40,32 @@ async def on_message(message):
 
     
     if cmd == 'extract':
-        limit = parameters[0]
-        limit = int(limit)
+        if parameters[0]:
+            limit = parameters[0]
+            limit = int(limit)
+        else:
+            
+            await message.channel.send('r u sure to extract all your messages in this channel? (y/n)')
+            try:
+                msg = await client.wait_for("message", timeout=5.0)
+            except asyncio.TimeoutError:
+                await message.channel.send('bro u didnt reply')
+            else:
+                if msg.content == 'y':
+                    limit = -1
+                else:
+                    limit = 0
+
+    
         # target = parameters[1]
         all_messages = [message async for message in message.channel.history()]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
-        for msg in result.extracted_messages:
-            await message.channel.send(msg.content)
+        emf.writing(message, result)
+
+
+        
+        
 
 
         

@@ -2,7 +2,7 @@ import importlib
 import discord
 from pandas import ExcelFile
 
-
+#STILL HVNT IMPLEMENT FOR THE CASE LIMIT = 0 MEAN DO NTH, LIMIT = -1 MEAN DO ALL
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -54,6 +54,7 @@ def extract_messages(message, all_messages, limit):
     #removing the cmd message
     result.extracted_messages.pop()
     result.count -=1
+
     return result
 
 
