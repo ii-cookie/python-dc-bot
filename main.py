@@ -47,7 +47,7 @@ async def on_message(message):
             
             await message.channel.send('r u sure to extract all your messages in this channel? (y/n)')
             try:
-                msg = await client.wait_for("message", timeout=5.0)
+                msg = await client.wait_for("message", timeout = 10.0)
             except asyncio.TimeoutError:
                 await message.channel.send('bro u didnt reply')
             else:
@@ -58,11 +58,18 @@ async def on_message(message):
 
     
         # target = parameters[1]
-        all_messages = [message async for message in message.channel.history()]
+        all_messages = [message async for message in message.channel.history(limit = None, oldest_first=True)]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
         emf.writing(message, result)
 
+    if cmd == 'simple':
+        all_messages = [msg async for msg in message.channel.history(limit = 5, oldest_first=False)]
+        
+        for msg in all_messages:
+            if msg == '':
+                continue
+            await message.channel.send(msg.content)
         
 
 

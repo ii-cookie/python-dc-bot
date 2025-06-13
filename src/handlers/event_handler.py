@@ -13,7 +13,6 @@ guild = discord.Guild
 #extracting commands and parameters from text
 
 is_url = r'https?://\S+|www\.\S+'
-is_mention = r'<@\S+>'
 
 def extract_cmd(message):
     if message.author == client.user:
@@ -35,17 +34,16 @@ def extract_parameters(message):
             parameters = message.content.split()[1:]
             return parameters
 
-def is_valid_extract(content):
-    if not content.isascii():   #take only ascii characters
+def is_valid_extract(msg):
+    
+    content = msg.content
+    if not msg.content.isascii():   #take only ascii characters
         return False
     
-    if (re.findall(is_url, content)):   #skipping all the links
+    if (re.findall(is_url, msg.content)):   #skipping all the links
         return False
     
-    if (re.findall(is_mention, content)):
-        return 'there is a mention dude no way'
-    
-    return content
+    return True
 
 
 def extract_messages(message, all_messages, limit):
@@ -62,15 +60,13 @@ def extract_messages(message, all_messages, limit):
     
     for msg in all_messages:
         
-        content = is_valid_extract(msg.content)
-        if not is_valid_extract(content):
+        if not is_valid_extract(msg):
             continue
         
         
         if msg.author == user:
-            result.extracted_messages.append(message)
+            result.extracted_messages.append(msg)
             result.count += 1
-            result.content.append(content)
 
 
 

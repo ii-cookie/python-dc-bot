@@ -10,6 +10,7 @@
 
 def writing(message, result):
     with open('private_data/extracted_messages/' + message.author.name + '_' + message.channel.name + '_' + str(message.channel.id) + '.txt', 'w') as f:
-            for msg in result.extracted_messages:
-                # await message.channel.send(msg.content)  #old testing
+        # for content in result.content:
+        #         f.write(content + ' \n')
+        for msg in result.extracted_messages:
                 f.write(msg.content + ' \n')
