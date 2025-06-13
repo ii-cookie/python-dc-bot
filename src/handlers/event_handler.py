@@ -2,7 +2,7 @@ import importlib
 import discord
 from pandas import ExcelFile
 
-#STILL HVNT IMPLEMENT FOR THE CASE LIMIT = 0 MEAN DO NTH, LIMIT = -1 MEAN DO ALL
+
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -34,21 +34,35 @@ def extract_parameters(message):
             parameters = message.content.split()[1:]
             return parameters
 
+
+
+
 def extract_messages(message, all_messages, limit):
+
+    if limit == 0:
+        return
+    
+
     user = message.author
     class result:
         extracted_messages = []
-        count = 0
+        count = -1              #does one extra to ignore the cmd line
         def __init__(self, extracted_messages, count):
             self.extracted_messages = extracted_messages
             self.count = count
     
     for msg in all_messages:
-        if result.count > limit:    #does one extra time
-            break
+        
         if msg.author == user:
             result.extracted_messages.append(msg)
             result.count += 1
+
+        if limit == -1:     #skip the limit checking
+            continue
+
+        if result.count > limit:   
+            break
+
     
     result.extracted_messages.reverse()
     #removing the cmd message
