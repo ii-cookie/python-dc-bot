@@ -44,11 +44,16 @@ def extract_messages(message, all_messages, limit):
             self.count = count
     
     for msg in all_messages:
-        if result.count >= limit:
+        if result.count > limit:    #does one extra time
             break
         if msg.author == user:
             result.extracted_messages.append(msg)
             result.count += 1
+    
+    result.extracted_messages.reverse()
+    #removing the cmd message
+    result.extracted_messages.pop()
+    result.count -=1
     return result
 
 
