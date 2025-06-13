@@ -38,9 +38,9 @@ async def on_message(message):
     if cmd == 'ping':   
         await message.channel.send('pong')
 
-    
+
     if cmd == 'extract':
-        if parameters[0]:
+        if parameters:
             limit = parameters[0]
             limit = int(limit)
         else:
@@ -63,8 +63,6 @@ async def on_message(message):
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
         emf.writing(message, result)
 
-
-        
         
 
 
