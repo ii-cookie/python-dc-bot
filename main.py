@@ -19,27 +19,20 @@ guild = discord.Guild
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
-#basic ping pong checking
+
 @client.event
 async def on_message(message):
 
+    cmd = event_handle.extract_cmd(message)
+    parameters = event_handle.extract_parameters(message)
+    #testing parameters
+    if cmd == 'say':   
+        words = ' '.join(parameters)
+        await message.channel.send(words)
 
-    if message.author == client.user:
-        return
-    elif message.content.startswith('_'):
-        cmd = message.content.split()[0].replace("_","")
-
-        if len(message.content.split()) > 1:
-            parameters = message.content.split()[1:]
-
-            #testing parameters
-            if cmd == 'say':   
-                words = ' '.join(parameters)
-                await message.channel.send(words)
-
-        #testing cmd
-        if cmd == 'ping':   
-            await message.channel.send('pong')
+    #testing cmd
+    if cmd == 'ping':   
+        await message.channel.send('pong')
 
         
 
