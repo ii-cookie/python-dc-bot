@@ -22,6 +22,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.author.bot:
+        return
 
     cmd = event_handle.extract_cmd(message)
     parameters = event_handle.extract_parameters(message)
@@ -33,6 +35,18 @@ async def on_message(message):
     #testing cmd
     if cmd == 'ping':   
         await message.channel.send('pong')
+
+    
+    if cmd == 'extract':
+        limit = parameters[0]
+        limit = int(limit)
+        # target = parameters[1]
+        all_messages = [message async for message in message.channel.history()]
+        result = event_handle.extract_messages(message, all_messages, limit)
+        await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
+        for msg in result.extracted_messages:
+            await message.channel.send(msg.content)
+
 
         
 
