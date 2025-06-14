@@ -4,6 +4,7 @@ import pandas as pd
 from dotenv import load_dotenv, dotenv_values
 import os
 import asyncio
+import re
 import src.handlers.event_handler as event_handle
 import src.utils.extracted_messages_filewriter as emf
 
@@ -57,19 +58,29 @@ async def on_message(message):
                     limit = 0
 
     
-        # target = parameters[1]
+        
         all_messages = [message async for message in message.channel.history(limit = None, oldest_first=True)]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
         emf.writing(message, result)
 
-    if cmd == 'simple':
+    if cmd == 'test':
         all_messages = [msg async for msg in message.channel.history(limit = 5, oldest_first=False)]
         
         for msg in all_messages:
             if msg == '':
                 continue
-            await message.channel.send(msg.content)
+            is_mention = r'<@[0-9]+>'
+            partitions = re.split(is_mention, msg.content)
+            mentions = msg.mentions
+
+            i = 1
+            sentence = partitions[0]
+            for mention in mentions:
+                sentence += ' ' + mention.name + ' ' + partitions[i]
+                i += 1
+
+            await message.channel.send(sentence)
         
 
 
