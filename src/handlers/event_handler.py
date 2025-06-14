@@ -36,6 +36,9 @@ def extract_parameters(message):
 
 def is_valid_extract(msg):
     
+    if msg.content == '':
+        return False    
+
     content = msg.content
     if not msg.content.isascii():   #take only ascii characters
         return False
@@ -44,6 +47,27 @@ def is_valid_extract(msg):
         return False
     
     return True
+
+
+def remove_mention(msg):
+    is_mention = r'<@[0-9]+>'
+    partitions = re.split(is_mention, msg.content)
+    mentions = msg.mentions
+
+    print("partitions: ")   #checking why partitions[i] is failing
+    print(partitions)
+
+    i = 1
+    sentence = partitions[0]
+    for mention in mentions:
+        sentence += mention.name + partitions[i]
+        i += 1
+
+    print("sentence: ")     #checking why partitions[i] is failing
+    print(sentence)
+
+    return sentence
+
 
 
 def extract_messages(message, all_messages, limit):
@@ -60,14 +84,14 @@ def extract_messages(message, all_messages, limit):
     
     for msg in all_messages:
         
-        if not is_valid_extract(msg):
-            continue
-        
-        
         if msg.author == user:
+
+            if not is_valid_extract(msg):
+                continue    
+
             result.extracted_messages.append(msg)
             result.count += 1
-
+            result.content.append(remove_mention(msg))
 
 
         if limit == -1:     #skip the limit checking
@@ -80,7 +104,7 @@ def extract_messages(message, all_messages, limit):
     result.extracted_messages.reverse()
     #removing the cmd message
     result.extracted_messages.pop()
-    result.count -=1
+    result.count -= 1
 
     return result
 

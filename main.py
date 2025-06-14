@@ -59,7 +59,7 @@ async def on_message(message):
 
     
         
-        all_messages = [message async for message in message.channel.history(limit = None, oldest_first=True)]
+        all_messages = [message async for message in message.channel.history(limit = None, oldest_first = False)]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
         emf.writing(message, result)
@@ -77,7 +77,7 @@ async def on_message(message):
             i = 1
             sentence = partitions[0]
             for mention in mentions:
-                sentence += ' ' + mention.name + ' ' + partitions[i]
+                sentence += mention.name + partitions[i]
                 i += 1
 
             await message.channel.send(sentence)
