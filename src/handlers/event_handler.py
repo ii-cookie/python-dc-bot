@@ -105,6 +105,7 @@ def extract_messages(message, all_messages, limit):
     #removing the cmd message
     result.extracted_messages.pop()
     result.count -= 1
+    result.extracted_messages.reverse()
 
     return result
 
