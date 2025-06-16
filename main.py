@@ -18,6 +18,7 @@ client = discord.Client(intents=intents)
 guild = discord.Guild
 
 
+
 #-----------------------------basic checking if bot online----------------------------------
 @client.event
 async def on_ready():
@@ -30,9 +31,11 @@ async def on_message(message):
         return
     
 
+
 #------------------------------extract commands-------------------------------
     cmd = event_handle.extract_cmd(message)
     parameters = event_handle.extract_parameters(message)
+
 
 
 #------------------------------testing parameters-----------------------------
@@ -41,9 +44,11 @@ async def on_message(message):
         await message.channel.send(words)
 
 
+
 #--------------------------------testing cmd----------------------------------
     if cmd == 'ping':   
         await message.channel.send('pong')
+
 
 
 #----------------------------extract messages to txt------------------------------
@@ -52,7 +57,6 @@ async def on_message(message):
             limit = parameters[0]
             limit = int(limit)
         else:
-            
             await message.channel.send('r u sure to extract all your messages in this channel? (y/n)')
             try:
                 msg = await client.wait_for("message", timeout = 10.0)
@@ -70,7 +74,8 @@ async def on_message(message):
         fw.writing_extracted_msg(message, result)
 
 
-#-------------------------test cmd----------------------------
+
+#------------------------------------------test cmd------------------------------------------
     if cmd == 'test':
         all_messages = [msg async for msg in message.channel.history(limit = 5, oldest_first=False)]
         
@@ -89,6 +94,34 @@ async def on_message(message):
 
             await message.channel.send(sentence)
         
+#-------------------------------------------------------------------------------------------------
+#-------------------------------------------toggles-----------------------------------------------
+#-------------------------------------------------------------------------------------------------
+    if cmd == 'toggle':
+        if len(parameters) >= 1:
+
+
+#----------------------------------checking toggle type----------------------------------
+#(later put in separate file as checker) input = parameters, output = id + filename
+#----------------------toggle twitter conv-------------------------------
+            if parameters[0] == 'twitter':      #cmd = _toggle twitter 
+                filename = 'twitter'
+            if len(parameters) == 2:
+                if parameters[1] == 'server':
+                    filename += '_server'       #filename = twitter_server
+                    id = message.guild.id
+            else:
+                filename += '_user'             #filename = twitter_user
+                id = message.author.id
+                
+
+
+#----------------------------------end of checking toggle type------------------------------
+        response = fw.save_toggle(id, filename)
+        id = ''
+        filename = ''   #not sure if i need to clear this but just in case
+
+        await message.channel.send(response)
 
 
         
