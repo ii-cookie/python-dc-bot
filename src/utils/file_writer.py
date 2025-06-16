@@ -14,25 +14,28 @@ def writing_extracted_msg(message, result):
 
 #---------------------a function that saves and deletes from file on toggles--------------------
 def save_toggle(id, filename):
-    directory_path = Path("private_data")
-    # Create the directory
-    try:
-        directory_path.mkdir()
-        print(f"Directory '{directory_path}' created successfully.")
-    except FileExistsError:
-        print(f"Directory '{directory_path}' already exists.")
-    except PermissionError:
-        print(f"Permission denied: Unable to create '{directory_path}'.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    # directory_path = Path("private_data")
+    # # Create the directory
+    # try:
+    #     directory_path.mkdir()
+    #     print(f"Directory '{directory_path}' created successfully.")
+    # except FileExistsError:
+    #     print(f"Directory '{directory_path}' already exists.")
+    # except PermissionError:
+    #     print(f"Permission denied: Unable to create '{directory_path}'.")
+    # except Exception as e:
+    #     print(f"An error occurred: {e}")
 
     id = str(id)
 
-    with open('private_data/' + filename + '.txt', 'w+') as f:
-        all_save_data = f.readlines()
+    with open('private_data/' + filename + '.txt', 'r') as f:
+        all_save_data = [line.rstrip() for line in f]
+        print(all_save_data)
+        print(id)
+    with open('private_data/' + filename + '.txt', 'w') as f:
         if id in all_save_data:
             for data in all_save_data:
-                if data.strip("\n") != id:
+                if data != id:
                     f.write(data)
             return filename + " is now toggled off"
         else:
