@@ -17,7 +17,8 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 guild = discord.Guild
 
-#basic checking if bot online
+
+#-----------------------------basic checking if bot online----------------------------------
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
@@ -27,19 +28,25 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:
         return
+    
 
+#------------------------------extract commands-------------------------------
     cmd = event_handle.extract_cmd(message)
     parameters = event_handle.extract_parameters(message)
-    #testing parameters
+
+
+#------------------------------testing parameters-----------------------------
     if cmd == 'say':   
         words = ' '.join(parameters)
         await message.channel.send(words)
 
-    #testing cmd
+
+#--------------------------------testing cmd----------------------------------
     if cmd == 'ping':   
         await message.channel.send('pong')
 
 
+#----------------------------extract messages to txt------------------------------
     if cmd == 'extract':
         if parameters:
             limit = parameters[0]
@@ -56,14 +63,14 @@ async def on_message(message):
                     limit = -1
                 else:
                     limit = 0
-
-    
-        
+  
         all_messages = [message async for message in message.channel.history(limit = None, oldest_first = False)]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
         fw.writing_extracted_msg(message, result)
 
+
+#-------------------------test cmd----------------------------
     if cmd == 'test':
         all_messages = [msg async for msg in message.channel.history(limit = 5, oldest_first=False)]
         
