@@ -114,3 +114,35 @@ def extract_messages(message, all_messages, limit):
     return result
 
 
+#----------------------------identifying toggle type--------------------------
+def identify_toggle_type(message,parameters):
+    
+    
+    if len(parameters) == 0:
+        return False, False, 'Please enter a social media name, eg _toggle twitter'
+    
+    
+    if parameters[0] == 'twitter':                  #cmd = _toggle twitter 
+        filename = 'twitter'
+        
+    elif parameters[0] == 'instagram' or 'ig':        #cmd = _toggle twitter 
+        filename = 'instagram'
+    else:
+        return False, False, 'This social media is currently not supported'
+        
+        
+    if len(parameters) == 2:
+        
+        if parameters[1] == 'server':               #cmd = _toggle ???? server
+            id = message.guild.id
+            response = filename + ' link conversion for your server has been toggled '
+            filename += '_server'                   #filename = ????_server
+            
+    else:                                           #cmd = _toggle ???? 
+        id = message.author.id
+        response = filename + ' link conversion for you has been toggled '
+        filename += '_user'                         #filename = ????_user
+        
+
+        
+    return filename, id, response

@@ -98,26 +98,27 @@ async def on_message(message):
 #-------------------------------------------toggles-----------------------------------------------
 #-------------------------------------------------------------------------------------------------
     if cmd == 'toggle':
-        if len(parameters) >= 1:
+        
 
 
 #----------------------------------checking toggle type----------------------------------
 #(later put in separate file as checker) input = parameters, output = id + filename
 #----------------------toggle twitter conv-------------------------------
-            if parameters[0] == 'twitter':      #cmd = _toggle twitter 
-                filename = 'twitter'
-            if len(parameters) == 2:
-                if parameters[1] == 'server':
-                    filename += '_server'       #filename = twitter_server
-                    id = message.guild.id
-            else:
-                filename += '_user'             #filename = twitter_user
-                id = message.author.id
+        # if len(parameters) >= 1:
+        #     if parameters[0] == 'twitter':      #cmd = _toggle twitter 
+        #         filename = 'twitter'
+        #     if len(parameters) == 2:
+        #         if parameters[1] == 'server':
+        #             filename += '_server'       #filename = twitter_server
+        #             id = message.guild.id
+        #     else:
+        #         filename += '_user'             #filename = twitter_user
+        #         id = message.author.id
                 
-
+        filename, id, response = event_handle.identify_toggle_type(message, parameters)
 
 #----------------------------------end of checking toggle type------------------------------
-        response = fw.save_toggle(id, filename)
+        response = fw.save_toggle(filename, id, response)
         id = ''
         filename = ''   #not sure if i need to clear this but just in case
 
