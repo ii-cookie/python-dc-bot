@@ -6,7 +6,7 @@ import os
 import asyncio
 import re
 import src.handlers.event_handler as event_handle
-import src.utils.extracted_messages_filewriter as emf
+import src.utils.file_writer as fw
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -62,7 +62,7 @@ async def on_message(message):
         all_messages = [message async for message in message.channel.history(limit = None, oldest_first = False)]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')
-        emf.writing(message, result)
+        fw.writing_extracted_msg(message, result)
 
     if cmd == 'test':
         all_messages = [msg async for msg in message.channel.history(limit = 5, oldest_first=False)]

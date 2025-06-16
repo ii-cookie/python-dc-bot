@@ -10,9 +10,8 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 guild = discord.Guild
 
-#extracting commands and parameters from text
 
-is_url = r'https?://\S+|www\.\S+'
+#----------------------------------detect command / parameters-------------------------------------
 
 def extract_cmd(message):
     if message.author == client.user:
@@ -33,7 +32,12 @@ def extract_parameters(message):
         if len(message.content.split()) > 1:
             parameters = message.content.split()[1:]
             return parameters
+        
+#------------------------------------extracting messages-------------------------------------
 
+
+#------------------helper func-------------------
+is_url = r'https?://\S+|www\.\S+'
 def is_valid_extract(msg):
     
     if msg.content == '':
@@ -68,7 +72,7 @@ def remove_mention(msg):
 
     return sentence
 
-
+#-----------------actual extract---------------------
 
 def extract_messages(message, all_messages, limit):
     
