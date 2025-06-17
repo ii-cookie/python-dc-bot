@@ -122,10 +122,10 @@ def identify_toggle_type(message,parameters):
         return False, False, 'Please enter a social media name, eg _toggle twitter'
     
     
-    if parameters[0] == 'twitter':                  #cmd = _toggle twitter 
+    if parameters[0] == 'twitter' or 'x':           #cmd = _toggle twitter 
         filename = 'twitter'
         
-    elif parameters[0] == 'instagram' or 'ig':        #cmd = _toggle twitter 
+    elif parameters[0] == 'instagram' or 'ig':      #cmd = _toggle twitter 
         filename = 'instagram'
     else:
         return False, False, 'This social media is currently not supported'
@@ -143,6 +143,62 @@ def identify_toggle_type(message,parameters):
         response = filename + ' link conversion for you has been toggled '
         filename += '_user'                         #filename = ????_user
         
-
-        
     return filename, id, response
+
+
+#------------------------------link convert-------------------------------
+class domain:
+    def __init__(self, old, new):
+        self.old = old
+        self.new = new
+
+    old = 'x.com'
+    new = 'vxtwitter.com'
+
+domains = []
+
+def content_link_replace(content):
+    if (re.search(is_url, content)):
+        content_without_links = re.split('is_url', content)
+        all_links = re.findall(is_url, content)
+        new_links = []
+
+        changes = False     #keep track if theres any link converted, if yes then need send, else do nth
+        for link in all_links:
+            for domain in domains:
+                pattern = rf"https?://{re.escape(domain.old)}\S+"   #check all patterns
+                if re.search(pattern, link):        #if detected, then convert the link
+                    new_link = link_convert(link, domain.old, domain.new)
+                    changes = True
+                    new_links.append(new_link)
+                    break       #no need to check other domains cuz alr found
+            
+            new_links.append(link)
+        
+        #if nothing need change, then return false
+        if not changes:
+            return False
+        
+        sentence = content_without_links[0]
+        i = 0
+        for link in new_links:
+            sentence += link + content_without_links[i]
+            i += 1
+        return sentence
+    return False
+
+
+
+
+
+def link_convert(link, old_domain, new_domain):
+    partitions = re.split('\/', link)
+
+    converted = ''
+
+    for part in partitions:
+        if part == partitions[2] and old_domain:
+            converted += '//' + new_domain + '/'
+            continue
+        converted += part
+        
