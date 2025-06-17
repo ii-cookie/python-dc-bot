@@ -187,10 +187,6 @@ def content_link_replace(content):
         return sentence
     return False
 
-
-
-
-
 def link_convert(link, old_domain, new_domain):
     partitions = re.split('\/', link)
 
@@ -201,4 +197,3 @@ def link_convert(link, old_domain, new_domain):
             converted += '//' + new_domain + '/'
             continue
         converted += part
-        
