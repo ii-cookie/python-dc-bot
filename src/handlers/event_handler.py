@@ -157,19 +157,6 @@ def identify_toggle_type(message,parameters):
 
 
 #------------------------------link convert-------------------------------
-# class domain:
-#     def __init__(self, old, new):
-#         self.old = old
-#         self.new = new
-        
-#DELETE BELOW WHEN PREFERENCE CMD IS MADE OR DOMAINS IS STORED AS FILE
-# domains = {
-#     'twitter': 
-#         {'default': domain('x.com', 'vxtwitter.com')},
-#     'instagram': 
-#         {'default': domain('www.instagram.com', 'www.ddinstagram.com')}
-#     }
-#DELETE ABOVE WHEN PREFERENCE CMD IS MADE 
 
 domains = fw.getDomainsjson()
 
