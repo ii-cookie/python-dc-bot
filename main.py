@@ -33,9 +33,7 @@ async def on_message(message):
 #-------------------------------START of detecting and running commands--------------------------    
 
     #------------------------------extract commands-------------------------------
-    cmd = event_handle.extract_cmd(message)
-    parameters = event_handle.extract_parameters(message)
-
+    cmd, parameters = event_handle.extract_cmd(message)
 
 
     #------------------------------testing parameters-----------------------------
