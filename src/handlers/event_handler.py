@@ -118,10 +118,18 @@ def extract_messages(message, all_messages, limit):
 #----------------------------identifying toggle type--------------------------
 def identify_toggle_type(message,parameters):
     
+    #ADD GET DOMAINS HERE WHEN IT IS MADE
     
     if not parameters:
+        response = ''
+        for domain in domains:
+            user, server = fw.check_toggle_on(domain, message)
+            user = str(user)
+            server = str(server)
+            response += domain + ': \n\tuser side: ' + user + '\tserver side: ' + server + '\n'
+            
         
-        return False, False, 'Please enter a social media name, eg: _toggle twitter'
+        return False, False, response
     
     if parameters[0] == 'twitter' or parameters[0] == 'x':           #cmd = _toggle twitter 
         filename = 'twitter'
@@ -154,12 +162,15 @@ class domain:
         self.old = old
         self.new = new
         
-type = 'twitter'
-default = domain('x.com', 'vxtwitter.com')
+#DELETE BELOW WHEN PREFERENCE CMD IS MADE 
+
 domains = {
     'twitter': 
-        {'default': default}
+        {'default': domain('x.com', 'vxtwitter.com')},
+    'instagram': 
+        {'default': domain('www.instagram.com', 'www.ddinstagram.com')}
     }
+#DELETE ABOVE WHEN PREFERENCE CMD IS MADE 
 
 def content_link_replace(msg):
     
