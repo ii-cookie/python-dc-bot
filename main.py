@@ -99,13 +99,11 @@ async def on_message(message):
         
         #---------------------------checking toggle type---------------------------
 
-        filename, id, response = event_handle.identify_toggle_type(message, parameters)
+        type, id, response = event_handle.identify_toggle_type(message, parameters)
 
         #-----------------------------save the toggles------------------------------
-        if filename and id:
-            response = fw.save_toggle(filename, id, response)
-        id = ''
-        filename = ''   #not sure if i need to clear this but just in case
+        if type and id:
+            response = fw.save_toggle(type, id, response)
 
         await message.channel.send(response)
 
