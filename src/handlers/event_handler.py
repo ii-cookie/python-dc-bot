@@ -157,19 +157,21 @@ def identify_toggle_type(message,parameters):
 
 
 #------------------------------link convert-------------------------------
-class domain:
-    def __init__(self, old, new):
-        self.old = old
-        self.new = new
+# class domain:
+#     def __init__(self, old, new):
+#         self.old = old
+#         self.new = new
         
 #DELETE BELOW WHEN PREFERENCE CMD IS MADE OR DOMAINS IS STORED AS FILE
-domains = {
-    'twitter': 
-        {'default': domain('x.com', 'vxtwitter.com')},
-    'instagram': 
-        {'default': domain('www.instagram.com', 'www.ddinstagram.com')}
-    }
+# domains = {
+#     'twitter': 
+#         {'default': domain('x.com', 'vxtwitter.com')},
+#     'instagram': 
+#         {'default': domain('www.instagram.com', 'www.ddinstagram.com')}
+#     }
 #DELETE ABOVE WHEN PREFERENCE CMD IS MADE 
+
+domains = fw.getDomainsjson()
 
 def content_link_replace(msg):
     
@@ -186,9 +188,9 @@ def content_link_replace(msg):
                 user_on, server_on = fw.check_toggle_on(domain, msg)
                 if (not user_on) and (not server_on):
                     continue
-                pattern = rf"https?://{re.escape(domains[domain]['default'].old)}\S+"   #check all patterns
+                pattern = rf"https?://{re.escape(domains[domain]['default']['old'])}\S+"   #check all patterns
                 if re.search(pattern, link):        #if detected, then convert the link
-                    new_link = link_convert(link, domains[domain]['default'].old, domains[domain]['default'].new)
+                    new_link = link_convert(link, domains[domain]['default']['old'], domains[domain]['default']['new'])
                     changes = True
                     new_links.append(new_link)
                     break       #no need to check other domains cuz alr found
