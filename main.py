@@ -19,39 +19,36 @@ guild = discord.Guild
 
 
 
-#-----------------------------basic checking if bot online----------------------------------
+#-----------------------------------basic checking if bot online----------------------------------
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
-
+#-------------------------------START of detecting and running commands--------------------------
 @client.event
 async def on_message(message):
     if message.author.bot:
         return
     
-
-
-#------------------------------extract commands-------------------------------
+    #------------------------------extract commands-------------------------------
     cmd = event_handle.extract_cmd(message)
     parameters = event_handle.extract_parameters(message)
 
 
 
-#------------------------------testing parameters-----------------------------
+    #------------------------------testing parameters-----------------------------
     if cmd == 'say':   
         words = ' '.join(parameters)
         await message.channel.send(words)
 
 
-
-#--------------------------------testing cmd----------------------------------
+    #--------------------------------testing cmd----------------------------------
     if cmd == 'ping':   
         await message.channel.send('pong')
 
 
 
-#----------------------------extract messages to txt------------------------------
+    #----------------------------extract messages to txt------------------------------
     if cmd == 'extract':
         if parameters:
             limit = parameters[0]
@@ -74,7 +71,7 @@ async def on_message(message):
 
 
 
-#------------------------------------------test cmd------------------------------------------
+    #------------------------------------test cmd----------------------------------------
     if cmd == 'test':
         all_messages = [msg async for msg in message.channel.history(limit = 5, oldest_first=False)]
         
@@ -93,23 +90,39 @@ async def on_message(message):
 
             await message.channel.send(sentence)
         
-#-------------------------------------------------------------------------------------------------
-#-------------------------------------------toggles-----------------------------------------------
-#-------------------------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------
+    #-------------------------------------------toggles-----------------------------------------------
+    #-------------------------------------------------------------------------------------------------
     if cmd == 'toggle':
         
-#----------------------------------checking toggle type----------------------------------
+        #---------------------------checking toggle type---------------------------
 
         filename, id, response = event_handle.identify_toggle_type(message, parameters)
 
-#----------------------------------save the toggles------------------------------
+        #-----------------------------save the toggles------------------------------
         response = fw.save_toggle(filename, id, response)
         id = ''
         filename = ''   #not sure if i need to clear this but just in case
 
         await message.channel.send(response)
 
+
+#----------------------------------END of detecting and running commands------------------------------
+
+
+#----------------------------------------auto response to messages------------------------------------
+@client.event
+async def on_message(message):
+    if message.author.bot:
+        return
+    
+    
+    #------------basic testing response------------
+    if message.content == "ping":
+        await message.channel.send("pong")
+    
 #-----------------------------------auto detecting links and conversion-------------------------------
+
     
 
 
