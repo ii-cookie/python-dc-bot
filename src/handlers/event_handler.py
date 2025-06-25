@@ -153,14 +153,12 @@ class domain:
         self.old = old
         self.new = new
 
-    old = 'x.com'
-    new = 'vxtwitter.com'
-
-domains = []
+twitter = domain('x.com', 'vxtwitter.com')
+domains = [twitter]
 
 def content_link_replace(content):
     if (re.search(is_url, content)):
-        content_without_links = re.split('is_url', content)
+        content_without_links = re.split(is_url, content)
         all_links = re.findall(is_url, content)
         new_links = []
 
@@ -174,22 +172,21 @@ def content_link_replace(content):
                     new_links.append(new_link)
                     break       #no need to check other domains cuz alr found
             
-            new_links.append(link)
         
         #if nothing need change, then return false
         if not changes:
             return False
         
         sentence = content_without_links[0]
-        i = 0
+        i = 1
         for link in new_links:
-            sentence += link + content_without_links[i]
+            sentence += str(link) + content_without_links[i]
             i += 1
         return sentence
     return False
 
 def link_convert(link, old_domain, new_domain):
-    partitions = re.split('\/', link)
+    partitions = re.split('/', link)
 
     converted = ''
 
@@ -198,3 +195,5 @@ def link_convert(link, old_domain, new_domain):
             converted += '//' + new_domain + '/'
             continue
         converted += part
+    
+    return converted

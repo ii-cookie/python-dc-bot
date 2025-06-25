@@ -24,12 +24,14 @@ guild = discord.Guild
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
-#-------------------------------START of detecting and running commands--------------------------
+
 @client.event
 async def on_message(message):
     if message.author.bot:
         return
     
+#-------------------------------START of detecting and running commands--------------------------    
+
     #------------------------------extract commands-------------------------------
     cmd = event_handle.extract_cmd(message)
     parameters = event_handle.extract_parameters(message)
@@ -116,9 +118,12 @@ async def on_message(message):
     if message.content == "ping":
         await message.channel.send("pong")
     
-#-----------------------------------auto detecting links and conversion-------------------------------
+    #-----------------------------------auto detecting links and conversion-------------------------------
 
+    response = event_handle.content_link_replace(message.content)
     
+    if response:    
+        await message.channel.send(response)
 
 
 
