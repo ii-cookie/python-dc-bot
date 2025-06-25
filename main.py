@@ -111,11 +111,6 @@ async def on_message(message):
 
 
 #----------------------------------------auto response to messages------------------------------------
-@client.event
-async def on_message(message):
-    if message.author.bot:
-        return
-    
     
     #------------basic testing response------------
     if message.content == "ping":
