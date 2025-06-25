@@ -118,6 +118,20 @@ def add_domain_preference(type, preference_name, preference_domain):
     datafile = Path('private_data/domains.json')
     data = getDomainsjson()
     
+    class domain:
+            def __init__(self, old, new):
+                self.old = old
+                self.new = new
+            def toJSON(self):
+                return self.__dict__
+    
+
+    
+    data[type][preference_name] = {
+        'old': data[type]['default']['old'],
+        'new': preference_domain
+    }
+        
+    json_string = json.dumps(data, default=lambda o: o.toJSON(), indent=4)
     with open(datafile, 'w') as json_file:
-        data[type][preference_name] = preference_domain
-        json.dump(data, json_file, indent=4)
+        json_file.write(json_string)

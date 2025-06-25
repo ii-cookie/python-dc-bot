@@ -124,16 +124,25 @@ async def on_message(message):
                     response = type + ' link conversion for your server has been toggled '
                     type += '_server'                   #type = ????_server
                 else: 
-                    
-                    response = 'from now on, all ' + type + ' links will be converted to ' + parameters[1] + ' for you'
-                    type, id, response = [type, False, response]
+                    await message.channel.send('r u sure u want to convert future ' + type + ' links to "' + parameters[1] + '"? [y/n]')
+                    try:
+                        msg = await client.wait_for("message", timeout = 10.0)
+                    except asyncio.TimeoutError:
+                        await message.channel.send('bro u didnt reply')
+                    else:     
+                        if msg.content == 'y':
+                            fw.add_domain_preference(type, msg.author.id, parameters[1])
+                            await message.channel.send('ok done')
+                        else:
+                            await message.channel.send('kk')
+                    type, id = [type, False]
                 
             else:                                           #cmd = _toggle ???? 
                 id = message.author.id
                 response = type + ' link conversion for you has been toggled '
                 type += '_user'                         #type = ????_user
 
-        # type, id, response = event_handle.identify_toggle_type(message, parameters)
+        # type, id, response = event_handle.identify_toggle_type(message, parameters)       #function usage for identify toggle type
         
         #-----------------------------save the toggles------------------------------
         if type and id:
@@ -157,7 +166,6 @@ async def on_message(message):
     
     if response:    
         await message.channel.send(response)
-
 
 
 
