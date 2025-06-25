@@ -13,6 +13,34 @@ def writing_extracted_msg(message, result):
     with open('private_data/extracted_messages/' + message.author.name + '_' + message.channel.name + '_' + str(message.channel.id) + '.txt', 'w') as f:
         for content in result.content:
                 f.write(content + ' \n')
+                
+#-----------------------------START of get xxx files()----------------------------
+#------------------------get files helper func---------------
+def getJSONFILE(path):
+    datafile = path
+    try:
+        if datafile.is_file():    
+            with open(datafile) as json_file:
+                data = json.load(json_file)
+        else:
+            data = {}
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e}. Initializing with empty data.")
+        data = {}
+    return data
+
+#-----------------------get data of toggles--------------------
+def getTogglesjson():
+    path = Path('private_data/toggles.json')
+    return getJSONFILE(path)
+
+#----------------------get data of domains----------------------
+def getDomainsjson():
+    path = Path('private_data/toggles.json')
+    return getJSONFILE(path)
+    
+    
+#------------------------------END of get xxx files()-------------------------------
 
 
 #---------------------a function that saves and deletes from file on toggles--------------------
@@ -20,18 +48,8 @@ def save_toggle(key, id, response):
 
     id = str(id)
     
-    """Converting to using json instead of txt"""
     datafile = Path('private_data/toggles.json')
-    
-    try:
-        if datafile.is_file():    
-            with open(datafile) as json_file:
-                all_toggle_data = json.load(json_file)
-        else:
-            all_toggle_data = {}
-    except json.JSONDecodeError as e:
-        print(f"JSONDecodeError: {e}. Initializing with empty data.")
-        all_toggle_data = {}
+    all_toggle_data = getTogglesjson()
         
     status = False
     
@@ -60,16 +78,7 @@ def check_toggle_on(type, message):
     user_key = type + '_' + 'user'
     server_key = type + '_' + 'server'
     
-    datafile = Path('private_data/toggles.json')
-    try:
-        if datafile.is_file():    
-            with open(datafile) as json_file:
-                all_toggle_data = json.load(json_file)
-        else:
-            all_toggle_data = {}
-    except json.JSONDecodeError as e:
-        print(f"JSONDecodeError: {e}. Initializing with empty data.")
-        all_toggle_data = {}
+    all_toggle_data = getTogglesjson()
         
     if not user_key in all_toggle_data:
         user = False
@@ -86,19 +95,3 @@ def check_toggle_on(type, message):
     
     return user, server
 
-#TAKE IN MESSAGE, THEN GO THRU ALL TYPES INSIDE THE JSONC
-def check_all_toggle_on(message):
-    datafile = Path('private_data/toggles.json')
-    
-    try:
-        if datafile.is_file():    
-            with open(datafile) as json_file:
-                all_toggle_data = json.load(json_file)
-        else:
-            all_toggle_data = {}
-    except json.JSONDecodeError as e:
-        print(f"JSONDecodeError: {e}. Initializing with empty data.")
-        all_toggle_data = {}
-        
-    for key in all_toggle_data:
-        type, category = re.split('_', key)
