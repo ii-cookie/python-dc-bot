@@ -120,6 +120,7 @@ def identify_toggle_type(message,parameters):
     
     
     if not parameters:
+        
         return False, False, 'Please enter a social media name, eg: _toggle twitter'
     
     if parameters[0] == 'twitter' or parameters[0] == 'x':           #cmd = _toggle twitter 
@@ -154,8 +155,11 @@ class domain:
         self.new = new
         
 type = 'twitter'
-twitter = domain('x.com', 'vxtwitter.com')
-domains = {'twitter': twitter}
+default = domain('x.com', 'vxtwitter.com')
+domains = {
+    'twitter': 
+        {'default': default}
+    }
 
 def content_link_replace(msg):
     
@@ -169,13 +173,12 @@ def content_link_replace(msg):
         changes = False     #keep track if theres any link converted, if yes then need send, else do nth
         for link in all_links:
             for domain in domains:
-                print(fw.check_toggle_on(domain, msg))
-                if not fw.check_toggle_on(domain, msg):
-                    
+                user_on, server_on = fw.check_toggle_on(domain, msg)
+                if (not user_on) and (not server_on):
                     continue
-                pattern = rf"https?://{re.escape(domains[domain].old)}\S+"   #check all patterns
+                pattern = rf"https?://{re.escape(domains[domain]['default'].old)}\S+"   #check all patterns
                 if re.search(pattern, link):        #if detected, then convert the link
-                    new_link = link_convert(link, domains[domain].old, domains[domain].new)
+                    new_link = link_convert(link, domains[domain]['default'].old, domains[domain]['default'].new)
                     changes = True
                     new_links.append(new_link)
                     break       #no need to check other domains cuz alr found
