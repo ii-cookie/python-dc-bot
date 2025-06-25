@@ -138,14 +138,6 @@ def identify_toggle_type(message,parameters):
             domain_notfound = False
     if domain_notfound:
         return False, False, 'This social media is currently not supported'
-    # if parameters[0] == 'twitter' or parameters[0] == 'x':           #cmd = _toggle twitter 
-    #     type = 'twitter'
-        
-    # elif parameters[0] == 'instagram' or parameters[0] == 'ig':      #cmd = _toggle twitter 
-    #     type = 'instagram'
-    
-    # else:
-    #     return False, False, 'This social media is currently not supported'
         
         
     if len(parameters) == 2:
