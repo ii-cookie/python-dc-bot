@@ -15,7 +15,7 @@ def writing_extracted_msg(message, result):
 
 
 #---------------------a function that saves and deletes from file on toggles--------------------
-def save_toggle(filename, id, response):
+def save_toggle(key, id, response):
 
     id = str(id)
     
@@ -35,18 +35,18 @@ def save_toggle(filename, id, response):
     status = False
     
     with open(datafile, 'w') as json_file:
-        if filename in all_toggle_data:
+        if key in all_toggle_data:
             #case 1: key exist, id exist
-            if id in all_toggle_data[filename]:
-                all_toggle_data[filename].remove(id)
+            if id in all_toggle_data[key]:
+                all_toggle_data[key].remove(id)
                 status = response + 'off'
             #case 2: key exist, id dont exist
             else:
-                all_toggle_data[filename].append(id)
+                all_toggle_data[key].append(id)
                 status = response + "on"
         #case 3: key dont exist -> id also dont exist
         else:
-            all_toggle_data[filename] = [id]
+            all_toggle_data[key] = [id]
             status = response + "on"
         json.dump(all_toggle_data, json_file, indent=4)
         return status
