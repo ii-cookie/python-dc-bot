@@ -96,9 +96,49 @@ async def on_message(message):
     if cmd == 'toggle':
         
         #---------------------------checking toggle type---------------------------
+        # domains = fw.getDomainsjson()
+
+        # if not parameters:
+        #     response = ''
+        #     for domain in domains:
+        #         user, server = fw.check_toggle_on(domain, message)
+        #         user = str(user)
+        #         server = str(server)
+        #         response += domain + ': \n\tuser side: ' + user + '\tserver side: ' + server + '\n'
+                
+            
+        #     type, id, response = [False, False, response]
+        
+        # domain_notfound = True
+        # for domain in fw.getDomainsjson():
+        #     if parameters[0] == domain:
+        #         type = domain
+        #         domain_notfound = False
+        # if domain_notfound:
+        #     type, id, response = [False, False, 'This social media is currently not supported']
+            
+            
+        # if len(parameters) == 2:
+            
+        #     if parameters[1] == 'server':               #cmd = _toggle ???? server
+        #         id = message.guild.id
+        #         response = type + ' link conversion for your server has been toggled '
+        #         type += '_server'                   #type = ????_server
+        #     else: 
+                
+        #         response = 'from now on, all ' + type + ' links will be converted to ' + parameters[1] + ' for you'
+        #         type, id, response = [type, False, response]
+                
+                
+        # else:                                           #cmd = _toggle ???? 
+        #     id = message.author.id
+        #     response = type + ' link conversion for you has been toggled '
+        #     type += '_user'                         #type = ????_user
+            
+        # type, id, response = [type, id, response]
 
         type, id, response = event_handle.identify_toggle_type(message, parameters)
-
+        
         #-----------------------------save the toggles------------------------------
         if type and id:
             response = fw.save_toggle(type, id, response)

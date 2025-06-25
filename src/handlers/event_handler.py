@@ -109,8 +109,7 @@ def extract_messages(message, all_messages, limit):
 
 #----------------------------identifying toggle type--------------------------
 def identify_toggle_type(message,parameters):
-    
-    #ADD GET DOMAINS HERE WHEN IT IS MADE
+
     
     if not parameters:
         response = ''
@@ -138,6 +137,10 @@ def identify_toggle_type(message,parameters):
             id = message.guild.id
             response = type + ' link conversion for your server has been toggled '
             type += '_server'                   #type = ????_server
+        else: 
+            
+            response = 'from now on, all ' + type + ' links will be converted to ' + parameters[1] + ' for you'
+            return type, False, response
             
             
     else:                                           #cmd = _toggle ???? 
