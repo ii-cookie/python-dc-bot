@@ -102,7 +102,8 @@ async def on_message(message):
         filename, id, response = event_handle.identify_toggle_type(message, parameters)
 
         #-----------------------------save the toggles------------------------------
-        response = fw.save_toggle(filename, id, response)
+        if filename and id:
+            response = fw.save_toggle(filename, id, response)
         id = ''
         filename = ''   #not sure if i need to clear this but just in case
 

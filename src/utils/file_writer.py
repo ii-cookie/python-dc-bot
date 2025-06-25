@@ -50,3 +50,35 @@ def save_toggle(key, id, response):
             status = response + "on"
         json.dump(all_toggle_data, json_file, indent=4)
         return status
+    
+    
+#------------------------------------check toggle-------------------------------------------
+def check_toggle(type, message):
+    
+    type = 'twitter'
+    user_key = type + '_' + 'user'
+    server_key = type + '_' + 'server'
+    
+    datafile = Path('private_data/toggles.json')
+    try:
+        if datafile.is_file():    
+            with open(datafile) as json_file:
+                all_toggle_data = json.load(json_file)
+        else:
+            all_toggle_data = {}
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e}. Initializing with empty data.")
+        all_toggle_data = {}
+        
+    if not user_key in all_toggle_data:
+        return False
+    
+    if not server_key in all_toggle_data:
+        return False
+    
+    if not message.author.id in all_toggle_data[user_key]:
+        return False
+    
+    if not message.guild.id in all_toggle_data[server_key]:
+        return False
+    
