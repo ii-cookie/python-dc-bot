@@ -53,7 +53,7 @@ def save_toggle(key, id, response):
     
     
 #------------------------------------check toggle-------------------------------------------
-def check_toggle(type, message):
+def check_toggle_on(type, message):
     
     type = 'twitter'
     user_key = type + '_' + 'user'
@@ -75,10 +75,11 @@ def check_toggle(type, message):
     
     if not server_key in all_toggle_data:
         return False
-    
-    if not message.author.id in all_toggle_data[user_key]:
+
+    if not str(message.author.id) in all_toggle_data[user_key]:
         return False
     
-    if not message.guild.id in all_toggle_data[server_key]:
+    if not str(message.guild.id) in all_toggle_data[server_key]:
         return False
     
+    return True

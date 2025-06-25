@@ -2,7 +2,7 @@ import importlib
 import discord
 from pandas import ExcelFile
 import re
-
+import src.utils.file_writer as fw
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -152,11 +152,15 @@ class domain:
     def __init__(self, old, new):
         self.old = old
         self.new = new
-
+        
+type = 'twitter'
 twitter = domain('x.com', 'vxtwitter.com')
-domains = [twitter]
+domains = {'twitter': twitter}
 
-def content_link_replace(content):
+def content_link_replace(msg):
+    
+    content = msg.content
+    
     if (re.search(is_url, content)):
         content_without_links = re.split(is_url, content)
         all_links = re.findall(is_url, content)
@@ -165,9 +169,13 @@ def content_link_replace(content):
         changes = False     #keep track if theres any link converted, if yes then need send, else do nth
         for link in all_links:
             for domain in domains:
-                pattern = rf"https?://{re.escape(domain.old)}\S+"   #check all patterns
+                print(fw.check_toggle_on(domain, msg))
+                if not fw.check_toggle_on(domain, msg):
+                    
+                    continue
+                pattern = rf"https?://{re.escape(domains[domain].old)}\S+"   #check all patterns
                 if re.search(pattern, link):        #if detected, then convert the link
-                    new_link = link_convert(link, domain.old, domain.new)
+                    new_link = link_convert(link, domains[domain].old, domains[domain].new)
                     changes = True
                     new_links.append(new_link)
                     break       #no need to check other domains cuz alr found

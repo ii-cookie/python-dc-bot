@@ -121,7 +121,7 @@ async def on_message(message):
     
     #-----------------------------------auto detecting links and conversion-------------------------------
 
-    response = event_handle.content_link_replace(message.content)
+    response = event_handle.content_link_replace(message)
     
     if response:    
         await message.channel.send(response)
