@@ -131,14 +131,21 @@ def identify_toggle_type(message,parameters):
         
         return False, False, response
     
-    if parameters[0] == 'twitter' or parameters[0] == 'x':           #cmd = _toggle twitter 
-        type = 'twitter'
-        
-    elif parameters[0] == 'instagram' or parameters[0] == 'ig':      #cmd = _toggle twitter 
-        type = 'instagram'
-    
-    else:
+    domain_notfound = True
+    for domain in fw.getDomainsjson():
+        if parameters[0] == domain:
+            type = domain
+            domain_notfound = False
+    if domain_notfound:
         return False, False, 'This social media is currently not supported'
+    # if parameters[0] == 'twitter' or parameters[0] == 'x':           #cmd = _toggle twitter 
+    #     type = 'twitter'
+        
+    # elif parameters[0] == 'instagram' or parameters[0] == 'ig':      #cmd = _toggle twitter 
+    #     type = 'instagram'
+    
+    # else:
+    #     return False, False, 'This social media is currently not supported'
         
         
     if len(parameters) == 2:
@@ -147,6 +154,7 @@ def identify_toggle_type(message,parameters):
             id = message.guild.id
             response = type + ' link conversion for your server has been toggled '
             type += '_server'                   #type = ????_server
+            
             
     else:                                           #cmd = _toggle ???? 
         id = message.author.id

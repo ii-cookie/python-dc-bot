@@ -39,11 +39,12 @@ def getDomainsjson():
     path = Path('private_data/domains.json')
     data = getJSONFILE(path)
     if data == {}:
-        
         class domain:
             def __init__(self, old, new):
                 self.old = old
                 self.new = new
+            def toJSON(self):
+                return self.__dict__
         
         data = {
                 'twitter': 
@@ -51,6 +52,9 @@ def getDomainsjson():
                 'instagram': 
                     {'default': domain('www.instagram.com', 'www.ddinstagram.com')}
                 }
+        json_string = json.dumps(data, default=lambda o: o.toJSON(), indent=4)
+        with open(path, 'w') as json_file:
+            json_file.write(json_string)
     return data
     
 #------------------------------END of get xxx files()-------------------------------
