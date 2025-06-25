@@ -18,28 +18,7 @@ def writing_extracted_msg(message, result):
 def save_toggle(filename, id, response):
 
     id = str(id)
-    # all_save_data = []
     
-    
-    # file = Path('private_data/' + filename + '.txt')
-    # if file.is_file():
-    #     with open('private_data/' + filename + '.txt', 'r') as f:
-    #         all_save_data = [line.rstrip() for line in f]
-    #         print(all_save_data)
-    #         print(id)
-
-    # with open('private_data/' + filename + '.txt', 'w') as f:
-    #     if id in all_save_data:
-    #         for data in all_save_data:
-    #             if data != id:
-    #                 f.write(data)
-    #         return response + 'off'
-    #     else:
-    #         for data in all_save_data:
-    #             f.write(data)
-    #         f.write(id + '\n')
-    #         return response + "on"
-        
     """Converting to using json instead of txt"""
     datafile = Path('private_data/toggles.json')
     
