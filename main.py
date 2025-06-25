@@ -67,7 +67,6 @@ async def on_message(message):
                     limit = -1
                 else:
                     limit = 0
-  
         all_messages = [message async for message in message.channel.history(limit = None, oldest_first = False)]
         result = event_handle.extract_messages(message, all_messages, limit)
         await message.channel.send('ok i extracted like ' + str(result.count) + ' of ur messages in this channel')

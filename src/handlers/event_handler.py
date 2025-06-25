@@ -55,6 +55,8 @@ def is_valid_extract(msg):
 
 def remove_mention(msg):
     is_mention = r'<@[0-9]+>'
+    if not (re.search(is_mention, msg.content)):
+        return msg.content
     partitions = re.split(is_mention, msg.content)
     mentions = msg.mentions
 
@@ -109,8 +111,7 @@ def extract_messages(message, all_messages, limit):
     #removing the cmd message
     result.extracted_messages.pop()
     result.count -= 1
-    result.extracted_messages.reverse()
-
+    result.content.reverse()
     return result
 
 
