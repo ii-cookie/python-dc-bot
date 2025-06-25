@@ -36,9 +36,22 @@ def getTogglesjson():
 
 #----------------------get data of domains----------------------
 def getDomainsjson():
-    path = Path('private_data/toggles.json')
-    return getJSONFILE(path)
-    
+    path = Path('private_data/domains.json')
+    data = getJSONFILE(path)
+    if data == {}:
+        
+        class domain:
+            def __init__(self, old, new):
+                self.old = old
+                self.new = new
+        
+        data = {
+                'twitter': 
+                    {'default': domain('x.com', 'vxtwitter.com')},
+                'instagram': 
+                    {'default': domain('www.instagram.com', 'www.ddinstagram.com')}
+                }
+    return data
     
 #------------------------------END of get xxx files()-------------------------------
 
@@ -95,3 +108,12 @@ def check_toggle_on(type, message):
     
     return user, server
 
+
+#--------------------------------store new domain preference---------------------------------
+def add_domain_preference(type, preference_name, preference_domain):
+    datafile = Path('private_data/domains.json')
+    data = getDomainsjson()
+    
+    with open(datafile, 'w') as json_file:
+        data[type][preference_name] = preference_domain
+        json.dump(data, json_file, indent=4)
