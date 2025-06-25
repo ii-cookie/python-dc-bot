@@ -132,10 +132,10 @@ def identify_toggle_type(message,parameters):
         return False, False, response
     
     if parameters[0] == 'twitter' or parameters[0] == 'x':           #cmd = _toggle twitter 
-        filename = 'twitter'
+        type = 'twitter'
         
     elif parameters[0] == 'instagram' or parameters[0] == 'ig':      #cmd = _toggle twitter 
-        filename = 'instagram'
+        type = 'instagram'
     
     else:
         return False, False, 'This social media is currently not supported'
@@ -145,15 +145,15 @@ def identify_toggle_type(message,parameters):
         
         if parameters[1] == 'server':               #cmd = _toggle ???? server
             id = message.guild.id
-            response = filename + ' link conversion for your server has been toggled '
-            filename += '_server'                   #filename = ????_server
+            response = type + ' link conversion for your server has been toggled '
+            type += '_server'                   #type = ????_server
             
     else:                                           #cmd = _toggle ???? 
         id = message.author.id
-        response = filename + ' link conversion for you has been toggled '
-        filename += '_user'                         #filename = ????_user
+        response = type + ' link conversion for you has been toggled '
+        type += '_user'                         #type = ????_user
         
-    return filename, id, response
+    return type, id, response
 
 
 #------------------------------link convert-------------------------------
@@ -162,8 +162,7 @@ class domain:
         self.old = old
         self.new = new
         
-#DELETE BELOW WHEN PREFERENCE CMD IS MADE 
-
+#DELETE BELOW WHEN PREFERENCE CMD IS MADE OR DOMAINS IS STORED AS FILE
 domains = {
     'twitter': 
         {'default': domain('x.com', 'vxtwitter.com')},
