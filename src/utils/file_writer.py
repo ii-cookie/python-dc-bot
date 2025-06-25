@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import json
+import re
 
 #---------------------writing extracted msg to txt---------------------------
 def writing_extracted_msg(message, result):
@@ -55,7 +56,7 @@ def save_toggle(key, id, response):
 #------------------------------------check toggle-------------------------------------------
 def check_toggle_on(type, message):
     
-    type = 'twitter'
+
     user_key = type + '_' + 'user'
     server_key = type + '_' + 'server'
     
@@ -71,15 +72,33 @@ def check_toggle_on(type, message):
         all_toggle_data = {}
         
     if not user_key in all_toggle_data:
-        return False
+        user = False
+    elif not str(message.author.id) in all_toggle_data[user_key]:
+        user = False
+    else:
+        user = True
     
     if not server_key in all_toggle_data:
-        return False
+        server = False
+    elif not str(message.guild.id) in all_toggle_data[server_key]:
+        server = False
+    else: server = True
+    
+    return user, server
 
-    if not str(message.author.id) in all_toggle_data[user_key]:
-        return False
+#TAKE IN MESSAGE, THEN GO THRU ALL TYPES INSIDE THE JSONC
+def check_all_toggle_on(message):
+    datafile = Path('private_data/toggles.json')
     
-    if not str(message.guild.id) in all_toggle_data[server_key]:
-        return False
-    
-    return True
+    try:
+        if datafile.is_file():    
+            with open(datafile) as json_file:
+                all_toggle_data = json.load(json_file)
+        else:
+            all_toggle_data = {}
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e}. Initializing with empty data.")
+        all_toggle_data = {}
+        
+    for key in all_toggle_data:
+        type, category = re.split('_', key)
