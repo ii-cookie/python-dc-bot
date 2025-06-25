@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import json
 
 #---------------------writing extracted msg to txt---------------------------
 def writing_extracted_msg(message, result):
@@ -16,22 +18,56 @@ def writing_extracted_msg(message, result):
 def save_toggle(filename, id, response):
 
     id = str(id)
-    all_save_data = []
-    file = Path('private_data/' + filename + '.txt')
-    if file.is_file():
-        with open('private_data/' + filename + '.txt', 'r') as f:
-            all_save_data = [line.rstrip() for line in f]
-            print(all_save_data)
-            print(id)
+    # all_save_data = []
+    
+    
+    # file = Path('private_data/' + filename + '.txt')
+    # if file.is_file():
+    #     with open('private_data/' + filename + '.txt', 'r') as f:
+    #         all_save_data = [line.rstrip() for line in f]
+    #         print(all_save_data)
+    #         print(id)
 
-    with open('private_data/' + filename + '.txt', 'w') as f:
-        if id in all_save_data:
-            for data in all_save_data:
-                if data != id:
-                    f.write(data)
-            return response + 'off'
+    # with open('private_data/' + filename + '.txt', 'w') as f:
+    #     if id in all_save_data:
+    #         for data in all_save_data:
+    #             if data != id:
+    #                 f.write(data)
+    #         return response + 'off'
+    #     else:
+    #         for data in all_save_data:
+    #             f.write(data)
+    #         f.write(id + '\n')
+    #         return response + "on"
+        
+    """Converting to using json instead of txt"""
+    datafile = Path('private_data/toggles.json')
+    
+    try:
+        if datafile.is_file():    
+            with open(datafile) as json_file:
+                all_toggle_data = json.load(json_file)
         else:
-            for data in all_save_data:
-                f.write(data)
-            f.write(id + '\n')
-            return response + "on"
+            all_toggle_data = {}
+    except json.JSONDecodeError as e:
+        print(f"JSONDecodeError: {e}. Initializing with empty data.")
+        all_toggle_data = {}
+        
+    status = False
+    
+    with open(datafile, 'w') as json_file:
+        if filename in all_toggle_data:
+            #case 1: key exist, id exist
+            if id in all_toggle_data[filename]:
+                all_toggle_data[filename].remove(id)
+                status = response + 'off'
+            #case 2: key exist, id dont exist
+            else:
+                all_toggle_data[filename].append(id)
+                status = response + "on"
+        #case 3: key dont exist -> id also dont exist
+        else:
+            all_toggle_data[filename] = [id]
+            status = response + "on"
+        json.dump(all_toggle_data, json_file, indent=4)
+        return status
