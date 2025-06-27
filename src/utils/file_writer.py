@@ -117,6 +117,7 @@ def check_toggle_on(type, message):
 def add_domain_preference(type, preference_name, preference_domain):
     datafile = Path('private_data/domains.json')
     data = getDomainsjson()
+    preference_name = str(preference_name)
     
     class domain:
             def __init__(self, old, new):
@@ -125,13 +126,19 @@ def add_domain_preference(type, preference_name, preference_domain):
             def toJSON(self):
                 return self.__dict__
     
-
-    
-    data[type][preference_name] = {
-        'old': data[type]['default']['old'],
-        'new': preference_domain
-    }
+    if type not in data:
+        data[type] = {}
+        
+    if (preference_name) in data[type]:
+        print('ran this one')
+        data[type][preference_name]['new'] = preference_domain
+    else:
+        data[type][preference_name] = {
+            'old': data[type]['default']['old'],
+            'new': preference_domain
+        }
         
     json_string = json.dumps(data, default=lambda o: o.toJSON(), indent=4)
     with open(datafile, 'w') as json_file:
-        json_file.write(json_string)
+        json.dump(data, json_file, indent=4) 
+        # json_file.write(json_string)
