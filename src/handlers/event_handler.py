@@ -182,10 +182,17 @@ def content_link_replace(msg):
                     continue
                 pattern = rf"https?://{re.escape(domains[domain]['default']['old'])}\S+"   #check all patterns
                 if re.search(pattern, link):        #if detected, then convert the link
-                    new_link = link_convert(link, domains[domain]['default']['old'], domains[domain]['default']['new'])
+                    
+                    preference = 'default'
+                    if str(msg.guild.id) in domains[domain]:
+                        preference = str(msg.guild.id)
+                    if str(msg.author.id) in domains[domain]:
+                        preference = str(msg.author.id)
+                    
+                    new_link = link_convert(link, domains[domain]['default']['old'], domains[domain][preference]['new'])
                     changes = True
                     new_links.append(new_link)
-                    break       #no need to check other domains cuz alr found
+                    break       #no need to check other domains for this link cuz alr found
             
         
         #if nothing need change, then return false
@@ -210,5 +217,5 @@ def link_convert(link, old_domain, new_domain):
             converted += '//' + new_domain + '/'
             continue
         converted += part + '/'
-    
+    converted = converted[:-1]
     return converted
