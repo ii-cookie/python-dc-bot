@@ -21,9 +21,17 @@ def extract_cmd(message):
 
         if len(message.content.split()) > 1:
             parameters = message.content.split()[1:]
-            return cmd, parameters
-        return cmd, None
+        return cmd
+    
+def extract_parameters(message):
+    if message.author == client.user:
+        return 
+    elif message.content.startswith('_'):
+        cmd = message.content.split()[0].replace("_","")
 
+        if len(message.content.split()) > 1:
+            parameters = message.content.split()[1:]
+            return parameters
         
 #------------------------------------extracting messages-------------------------------------
 
@@ -168,6 +176,8 @@ def content_link_replace(msg):
         for link in all_links:
             for domain in domains:
                 user_on, server_on = fw.check_toggle_on(domain, msg)
+                
+                #*********condition checking*******
                 if (not user_on) and (not server_on):
                     continue
                 pattern = rf"https?://{re.escape(domains[domain]['default']['old'])}\S+"   #check all patterns
@@ -196,9 +206,9 @@ def link_convert(link, old_domain, new_domain):
     converted = ''
 
     for part in partitions:
-        if part == partitions[2] and old_domain:
+        if part == partitions[2] and part == old_domain:
             converted += '//' + new_domain + '/'
             continue
-        converted += part
+        converted += part + '/'
     
     return converted
