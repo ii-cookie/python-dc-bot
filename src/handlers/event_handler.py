@@ -214,8 +214,10 @@ def link_convert(link, old_domain, new_domain):
 
     for part in partitions:
         if part == partitions[2] and part == old_domain:
-            converted += '//' + new_domain + '/'
+            converted += new_domain + '/'
             continue
         converted += part + '/'
     converted = converted[:-1]
-    return converted
+    print(converted)
+    print("https://www.instagram.com/reel/DKIjia6I8_q/?igsh=eTFzNm5mMzhwa3Zn")
+    return str(converted)

@@ -159,7 +159,7 @@ async def on_message(message):
     
     #------------basic testing response------------
     if message.content == "ping":
-        await message.channel.send("pong")
+        await message.channel.send("https://www.instagram.com/reel/DKIjia6I8_q/?igsh=eTFzNm5mMzhwa3Zn")
     
     #-----------------------------------auto detecting links and conversion-------------------------------
 
