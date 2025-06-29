@@ -115,8 +115,13 @@ async def on_message(message):
                 if parameters[0] == domain:
                     type = domain
                     domain_notfound = False
-            if domain_notfound:
-                type, id, response = [False, False, 'This social media is currently not supported']
+            if domain_notfound and len(parameters) <= 2:
+                type, id, response = [False, False, 'This social media is currently not supported, would you like to create a new conversion? \n\tuse _toggle create <keyword> <doman.old> <domain.new>. \n\texample: to convert https://x.com/ to https://vxtwitter.com/ \n\t\t<keyword> = twitter, \n\t\t<domain.old> = x.com, \n\t\t<domain.new> = vxtwitter.com']
+                
+            if len(parameters) == 1:
+                id = message.author.id
+                response = type + ' link conversion for you has been toggled '
+                type += '_user'                         #type = ????_user
 
             if len(parameters) == 2:
                 
@@ -137,6 +142,12 @@ async def on_message(message):
                         else:
                             await message.channel.send('kk')
                     type, id = [type, False]
+                    
+            if len(parameters) == 4:
+                if parameters[0] == 'create':
+                    keyword = parameters[1]
+                    old_domain = parameters[2]
+                    new_domain = parameters[3]
                 
             else:                                           #cmd = _toggle ???? 
                 id = message.author.id
